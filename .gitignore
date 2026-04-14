@@ -16,6 +16,7 @@ __pycache__/
 
 # Environment/local secrets
 .env
+scripts/sparse.env
 
 # Docker runtime data (local only)
 data/db/

@@ -3,7 +3,7 @@
     "version": "19.0.1.0.0",
     "summary": "Adds Gemini 3 models to Odoo AI provider list",
     "category": "Productivity",
-    "author": "Dev Team",
+    "author": "Bakum Viacheslav",
     "depends": ["ai"],
     "data": [
         "data/ai_agent_data.xml",
