@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="eusign_cp.owl_verifier">
+        <div class="shadow-sm border m-2 p-4 bg-white">
+            <div class="align-items-center justify-content-center">
+                <h5>
+                    <img src="/eusign_cp/static/description/CertificateProcess.png" alt="Logo" width="30" class="d-inline-block align-text-top"/>
+                    <span class="m-3">Перевірити підпис</span>
+                </h5>
+                <div class="mt-4 mb-4" id="drop-area" t-ref="dropArea">
+                  <form class="my-form">
+                      <p class="text-center">
+                          <span>Перетягніть сюди підписаний файл</span><br/>
+                          <span>або </span><a href="javascript:void(0);" class="link-primary" t-on-click="openFilePicker">завантажте його зі свого носія</a>
+                      </p>
+                      <p class="text-center"><small>(p7s, pdf, xml, asics або asice)</small></p>
+                      <input type="file" id="fileElem" t-ref="fileElem" multiple="1" t-on-change="handleFiles"/>
+                      <ul>
+                          <t t-foreach="state.file_labels" t-as="label" t-key="label">
+                              <li t-esc="label"/>
+                          </t>
+                      </ul>
+                  </form>
+                </div>
+                <div t-attf-class="mb-2 {{state.verified_files.length === 0 ? 'd-none' : ''}}">
+                    <Downloader title="'Ви можете зберегти підписаний файл.'" certificates="state.verified_files"/>
+                </div>
+                <label type="button" t-ref="VerificationButton" t-attf-class="btn btn-outline-primary btn-lg {{state.filesForVerifyReaded ? '' : 'disabled'}}" t-on-click="verifyFile" t-esc="state.verification_completed ? 'Дякую!' : 'Перевірити'"/>
+            </div>
+        </div>
+    </t>
+</templates>

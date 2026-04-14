@@ -1,0 +1,27 @@
+# OS/editor
+.DS_Store
+Thumbs.db
+.idea/
+.agents/
+.vscode/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Environment/local secrets
+.env
+
+# Docker runtime data (local only)
+data/db/
+data/filestore/
+enterprise/
+
+# Logs and temp
+*.log
+*.tmp

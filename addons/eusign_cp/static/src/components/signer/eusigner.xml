@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="eusign_cp.owl_signer_template">
+        <div class="shadow-sm border m-2 p-4 bg-white">
+            <div class="align-items-center justify-content-center">
+                <h5>
+                    <img src="/eusign_cp/static/description/CertificateCheck.png" alt="Logo" width="30" class="d-inline-block align-text-top"/>
+                    <span class="m-3">Підписати документ</span>
+                </h5>
+                <div class="accordion-container mt-2" t-ref="accordionContainer">
+                    <button class="accordion current">
+                        <div class="d-flex align-items-center">
+                            <img src="/eusign_cp/static/description/Arrow.png" border="0"/>
+                            <h6 class="m-0"><span class="m-2">1. Оберіть ЦСК </span></h6>
+                        </div>
+                    </button>
+                    <div class="panel" style="max-height: 135px;">
+                        <div class="m-2">
+                            <small>Оберіть зі списку свого надавача електронних довірчих послуг – суб’єкта, </small>
+                            <small>до якого ви зверталися для отримання електронного підпису.</small>
+                            <select class="form-select form-select-sm mt-2" t-ref="CAsServersSelect"
+                              t-att-disabled="state.privateKeyReaded ? true : undefined"
+                              t-on-change="onchangeCASettings"> </select>
+                            <output hidden="1">
+                                <t t-if="state.selected_certs.length">
+                                    <ul>
+                                        <t t-foreach="state.selected_certs" t-as="cert_name" t-key="cert_name">
+                                            <li><strong t-esc="cert_name"/></li>
+                                        </t>
+                                    </ul>
+                                </t>
+                                <t t-elif="state.selected_certs_message">
+                                    <span t-esc="state.selected_certs_message"/>
+                                </t>
+                            </output>
+                            <br/>
+                            <output hidden="1">
+                                <t t-if="state.selected_crls.length">
+                                    <ul>
+                                        <t t-foreach="state.selected_crls" t-as="crl_name" t-key="crl_name">
+                                            <li><strong t-esc="crl_name"/></li>
+                                        </t>
+                                    </ul>
+                                </t>
+                                <t t-elif="state.selected_crls_message">
+                                    <span t-esc="state.selected_crls_message"/>
+                                </t>
+                            </output>
+                        </div>
+                    </div>
+
+                    <button class="accordion">
+                        <div class="input-group custom-file-button">
+                            <div class="d-flex align-items-center">
+                                <img src="/eusign_cp/static/description/Arrow.png" border="0"/>
+                                <label for="formFileLg" class="form-label m-0"><h6 class="m-0"><span class="m-2">2. Файл ключа</span></h6>
+
+                                </label>
+                            </div>
+                        </div>
+                    </button>
+                    <div class="panel">
+                      <div class="m-2">
+                          <small>(зазвичай його назва "Key-6.dat" або *.pfx, *.pk8, *.zs2, *.jks)</small>
+                          <div class="input-group input-group-sm mt-3 mb-3">
+                              <input type="text" class="form-control" id="PKeyFileName"
+                                     placeholder="Особистий ключ"
+                                     aria-label="Особистий ключ" readonly="1"
+                                     t-att-value="state.pkey_file_name"
+                                     t-att-disabled="state.privateKeyReaded ? true : undefined"
+                                     t-on-click="openPrivateKeyFileDialog"/>
+                                <span class="input-group-text"
+                                      style="cursor:pointer; pointer-events:auto;"
+                                      t-on-click="openPrivateKeyFileDialog">Обрати</span>
+                                <input id="PKeyFileInput" t-ref="PKeyFileInput" type="file"
+                                       multiple="false" hidden="1"
+                                       t-att-disabled="state.privateKeyReaded ? true : undefined"
+                                       t-on-change="selectPrivateKeyFile"/>
+                          </div>
+                            <div class="input-group input-group-sm mb-3">
+                                <input type="password" id="PKeyPassword" t-ref="PKeyPassword"
+                                 placeholder="Пароль захисту ключа" class="form-control"
+                                 aria-label="Пароль захисту ключа:"
+                                 t-att-value="state.pkey_password"
+                                 t-att-disabled="(!state.can_enter_password || state.privateKeyReaded) ? true : undefined"
+                                 t-on-input="onPrivateKeyPasswordInput"
+                                 t-on-keydown="onKeyDown"/>
+                              <span class="input-group-text"
+                                    t-ref="PKeyReadButton"
+                                    style="cursor:pointer; pointer-events:auto;"
+                                    t-on-click="readPrivateKeyButtonClick"
+                                    t-esc="state.privateKeyReaded ? 'Стерти' : 'Зчитати'"/>
+                            </div>
+                            <div t-attf-class="mb-2 {{state.privateKeyReaded ? '' : 'd-none'}}">
+                                <Downloader title="'Сертифікати'" certificates="state.certificates"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="accordion">
+                        <div class="d-flex align-items-center">
+                            <img src="/eusign_cp/static/description/Arrow.png" border="0"/>
+                            <h6 class="m-0"><span class="m-2"> 3. Параметри підпису </span></h6>
+                        </div>
+                    </button>
+                    <div class="panel">
+                        <div class="m-2">
+                            <small class="m-0">Формат контейнера:</small>
+                            <select class="form-select form-select-sm mt-1 mb-2"
+                                    t-ref="SignFormat" t-on-change="SignFormatOnChange">
+                                <option value="1">XAdES. Дані та підпис зберігаються в XML файлі (*.xml)</option>
+                                <option value="2">PAdES. Дані та підпис зберігаються в PDF файлі (*.pdf)</option>
+                                <option value="3">CAdES. Дані та підпис зберігаються в CMS файлі (*.p7s)</option>
+                                <option value="4" selected="1">ASIC-E. Дані та підпис зберігаються в архіві (розширений формат)</option>
+                                <option value="5">ASIC-S. Дані та підпис зберігаються в архіві (простий формат)</option>
+                            </select>
+                            <small t-attf-class="m-0 {{state.AsicSelected ? '' : 'd-none'}}">Тип підпису:</small>
+                            <select t-attf-class="form-select form-select-sm mt-1 mb-2 {{state.AsicSelected ? '' : 'd-none'}}"
+                                    t-ref="signTypeASiCSelect"
+                                    t-on-change="signTypeASiCSelectOnChange">
+                                <option value="1" selected="1">CAdES</option>
+                                <option value="2">XAdES</option>
+                            </select>
+                            <small class="m-0">Алгоритм підпису:</small>
+                            <select class="form-select form-select-sm mt-1 mb-2"
+                                    t-ref="DSAlgTypeSelect"
+                                    disabled="1">
+                                <option value="1" selected="1">ДСТУ-4145</option>
+                                <option value="2">RSA</option>
+                            </select>
+                            <small class="m-0">Формат підпису:</small>
+                            <select t-attf-class="form-select form-select-sm mt-1 mb-2 {{state.XadesSelected ? '' : 'd-none'}}"
+                                    t-ref="signFormatXAdESSelect" t-on-change="signFormatXAdESSelectOnChange">
+                                <option value="32">XAdES-B-LTA – е-підпис для тривалого (архівного) зберігання</option>
+                                <option value="16" selected="1">XAdES-B-LT – додаються повні дані для перевірки</option>
+                                <option value="4">XAdES-B-T – додається час підписання файлу КЕП</option>
+                                <option value="1">XAdES-B-B – базова перевірка достовірності і цілісності даних</option>
+                            </select>
+                            <select t-attf-class="form-select form-select-sm mt-1 mb-2 {{state.PadesSelected ? '' : 'd-none'}}"
+                                    t-ref="signFormatPAdESSelect"
+                                    t-on-change="signFormatPAdESSelectOnChange">
+                                <option value="32">PAdES-B-LTA – е-підпис для тривалого (архівного) зберігання</option>
+                                <option value="16" selected="1">PAdES-B-LT – додаються повні дані для перевірки</option>
+                                <option value="4">PAdES-B-T – додається час підписання файлу КЕП</option>
+                                <option value="1">PAdES-B-B – базова перевірка достовірності і цілісності даних</option>
+                            </select>
+                            <select t-attf-class="form-select form-select-sm mt-1 mb-2 {{state.CadesSelected ? '' : 'd-none'}}"
+                                    t-ref="DSCAdESTypeSelect" t-on-change="DSCAdESTypeChanged">
+                                <option value="0">CAdES-BES – базова перевірка достовірності і цілісності даних</option>
+                                <option value="1">CAdES-T – додається час підписання файлу КЕП</option>
+                                <option value="2">CAdES-C – додається посилання на повні дані для перевірки</option>
+                                <option value="3" selected="1">CAdES-X Long – Довгостроковий з повними даними для перевірки</option>
+                                <option value="4">CAdES-X Long Trusted– Довгостроковий з повними даними ЦСК для перевірки</option>
+                            </select>
+                            <small t-attf-class="m-0 {{state.XadesSelected || state.CadesSelected &amp;&amp; !state.AsicSelected ? '' : 'd-none'}}">Тип підпису:</small>
+                            <select t-attf-class="form-select form-select-sm mt-1 mb-2 {{state.XadesSelected || state.CadesSelected &amp;&amp; !state.AsicSelected ? '' : 'd-none'}}"
+                                    t-ref="SignType">
+                                <option value="1" selected="1">Підпис та дані в окремих файлах (detached)</option>
+                                <option value="2">Підпис та дані в одному файлі (enveloped)</option>
+                            </select>
+                            <small>Оберіть файл для підпису (не більше 5 МБ):</small>
+                            <div class="input-group input-group-sm mt-1 mb-3">
+                              <input type="file" t-attf-class="form-control {{!state.sign_button_disabled ? '' : 'disabled'}}" id="FileToSign"
+                                     t-ref="FileToSign" t-on-change="onChangeFileToSign"/>
+                            </div>
+                            <div t-attf-class="mb-2 {{state.signed_files.length === 0 ? 'd-none' : ''}}">
+                                <Downloader title="'Підписаний файл'" certificates="state.signed_files"/>
+                            </div>
+                            <button type="button" t-ref="SignButton"
+                                    t-attf-class="btn btn-outline-primary btn-lg {{state.file_loaded ? '' : 'disabled'}}"
+                                    t-on-click="signFileEx"
+                                    t-esc="state.sign_completed ? 'Дякую!' : 'Підписати'"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>

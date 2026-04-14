@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="eusign_cp.owl_navbar">
+        <nav t-attf-class="navbar navbar-expand-lg navbar-light bg-light {{props.loaded ? '' : 'd-none'}}">
+          <div class="container-fluid">
+              <a class="navbar-brand" t-on-click="toggleMenu" href="javascript:void(0);">
+                <i id="home" class="fa fa-home fa-2x" aria-hidden="true"/>
+            </a>
+              <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                  <div class="navbar-nav">
+                      <a class="nav-link active" id="sign" t-on-click="toggleMenu" href="javascript:void(0);">Підписати документ</a>
+                      <a class="nav-link" id="verify" t-on-click="toggleMenu" href="javascript:void(0);">Перевірити підпис</a>
+                  </div>
+                  <span class="navbar-text ms-auto eusign-navbar-status" t-out="props.status_key"/>
+              </div>
+          </div>
+        </nav>
+    </t>
+</templates>

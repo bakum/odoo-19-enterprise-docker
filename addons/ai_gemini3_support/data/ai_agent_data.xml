@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="ai_agent_dev_gemini3" model="ai.agent">
+        <field name="name">Gemini 3 Agent</field>
+        <field name="subtitle">Default custom Gemini 3 agent from dev module.</field>
+        <field name="llm_model">gemini-3-flash-lite-preview</field>
+        <field name="response_style">balanced</field>
+        <field name="system_prompt">You are a helpful Odoo assistant.</field>
+        <field name="restrict_to_sources">False</field>
+    </record>
+</odoo>

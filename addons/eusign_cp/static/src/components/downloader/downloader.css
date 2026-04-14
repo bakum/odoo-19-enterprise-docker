@@ -1,0 +1,12 @@
+.downloader {
+  border: 2px dashed #ccc;
+  border-radius: 20px;
+  /*width: 480px;*/
+  /*font-family: sans-serif;*/
+  /*margin: 100px auto;*/
+  padding: 5px;
+  margin: 2px  auto;
+}
+.downloader a {
+  font-size: 14px; /* Уменьшение размера шрифта */
+}

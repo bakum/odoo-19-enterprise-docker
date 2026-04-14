@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record model="ir.module.category" id="api_rest_category">
+        <field name="name">OpenAPI</field>
+        <field name="sequence">13</field>
+    </record>
+
+    <record id="configuration_manager" model="res.groups">
+        <field name="name">OpenAPI manager</field>
+        <field name="user_ids" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+    </record>
+</odoo>

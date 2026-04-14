@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="backup_process_form_view" model="ir.ui.view">
+            <field name="name">backup.process.form</field>
+            <field name="model">backup.process</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button name="confirm_process" class="oe_highlight" string="Start" type="object" invisible="state != 'draft'"/>
+                        <button name="action_run_now" class="oe_highlight" string="Run now" type="object" invisible="state != 'running'"/>
+                        <button name="cancel_process" class="oe_highlight" string="Cancel" type="object" invisible="state == 'cancel'"/>
+                        <button name="reset_to_draft" string="Reset to Draft" type="object" invisible="state == 'draft'"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name" readonly="1"/>
+                                <field name="db_name" readonly="state != 'draft'"/>
+                                <field name="backup_format" readonly="state != 'draft'"/>
+                                <field name="frequency_cycle" readonly="state != 'draft'"/>
+                            </group>
+                            <group>
+                                <field name="backup_starting_time" readonly="state != 'draft'"/>
+                                <field name="next_execution" readonly="1"/>
+                                <field name="backup_location" readonly="state != 'draft'"/>
+                                <field name="remote_server_id" invisible="backup_location != 'remote'" readonly="state != 'draft'"/>
+                                <button string="Test Connection" name="test_host_connection" type="object" class="oe_highlight" invisible="backup_location != 'remote' or not remote_server_id"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="storage_path" readonly="state != 'draft'"/>
+                                <field name="enable_retention" readonly="state != 'draft'"/>
+                                <field name="retention" invisible="not enable_retention" readonly="state != 'draft'"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page name="backup_details" string="Backup Details">
+                                <field name="backup_details_ids" readonly="1">
+                                    <list create="false">
+                                        <field name="backup_date_time"/>
+                                        <field name="file_name"/>
+                                        <field name="status"/>
+                                        <field name="message"/>
+                                        <button name="unlink_confirmation" type="object" title="Delete" icon="fa-trash"/>
+                                        <button name="download_db_file" type="object" string="Download" invisible="status != 'Success'"/>
+                                    </list>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <chatter>
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </chatter>
+                </form>
+            </field>
+        </record>
+
+        <record id="backup_process_tree_view" model="ir.ui.view">
+            <field name="name">backup.process.tree</field>
+            <field name="model">backup.process</field>
+            <field name="arch" type="xml">
+                <list>
+                    <field name="name"/>
+                    <field name="db_name"/>
+                    <field name="frequency_cycle"/>
+                    <field name="backup_location"/>
+                    <field name="next_execution"/>
+                    <field name="state"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="backup_process_action_view" model="ir.actions.act_window">
+            <field name="name">Backup Processes</field>
+            <field name="res_model">backup.process</field>
+            <field name="view_mode">list,form</field>
+        </record>
+    </data>
+</odoo>

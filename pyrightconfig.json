@@ -1,0 +1,6 @@
+{
+  "include": [
+    "addons"
+  ],
+  "reportMissingImports": false
+}

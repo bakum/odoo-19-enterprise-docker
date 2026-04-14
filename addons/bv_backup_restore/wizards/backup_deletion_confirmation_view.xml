@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="backup_deletion_confirmation_wizard_view" model="ir.ui.view">
+            <field name="name">backup.deletion.confirmation.form</field>
+            <field name="model">backup.deletion.confirmation</field>
+            <field name="arch" type="xml">
+                <form string="Backup Deletion Confirmation">
+                    <sheet>
+                        <field name="message" readonly="1"/>
+                    </sheet>
+                    <footer>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                        <button string="Delete" name="action_delete_backup_detail" type="object" class="btn-primary"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <menuitem name="Backup Operation" id="backup_root_menu" groups="base.group_system" sequence="90" web_icon="bv_backup_restore,static/description/icon.png"/>
+        <menuitem name="Backup Processes" id="menu_backup_process" parent="backup_root_menu" action="backup_process_action_view" sequence="1"/>
+        <menuitem name="Configuration" id="backup_configuration_menu" parent="backup_root_menu" sequence="20"/>
+        <menuitem name="Remote Servers" id="backup_remote_server_menu" parent="backup_configuration_menu" action="backup_remote_server_action_view" sequence="1"/>
+    </data>
+</odoo>

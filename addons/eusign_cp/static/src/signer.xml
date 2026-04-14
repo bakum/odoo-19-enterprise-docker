@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="eusign_cp.owl_signer">
+        <NavBar loaded="state.loaded" status_key="state.status_key"/>
+        <div class="vh-100 overflow-auto bg-muted">
+            <t t-if="!state.loaded">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="d-flex align-items-center justify-content-center">
+                            <img src="/eusign_cp/static/description/LoadingBars.gif" height="80px" alt="Loader"/>
+                        </div>
+                        <h4 class="text-center">Ініціалізація бібліотеки підпису...</h4>
+                    </div>
+                </div>
+            </t>
+            <div t-attf-class="container {{state.loaded ? '' : 'd-none'}}">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="d-flex align-items-center justify-content-center">
+                            <img src="/eusign_cp/static/description/Keys.png" height="122px"
+                                 style="margin-right: 10px;"/>
+                            <h1 class="text-center">Довірчі послуги</h1>
+                        </div>
+                        <p class="text-center">За допомогою форми можна підписувати файли, що знаходяться на файловій системі тощо</p>
+                        <div class="row d-flex align-items-center justify-content-center">
+                            <div t-attf-class="col col-lg-5 m-0 p-0 {{state.signmode ? 'd-none' : ''}}">
+                                <Verifier/>
+                            </div>
+                            <div t-attf-class="col col-lg-5 m-0 p-0 {{state.signmode ? '' : 'd-none'}}">
+                                <EUSigner url_xml_http_proxy_service="'/signer/proxyHandler'"
+                                          url_get_certificates="'/eusign_cp/static/data/CACertificates.p7b'"
+                                          url_cas="'/eusign_cp/static/data/CAs.json'"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+         </div>
+    </t>
+
+</templates>

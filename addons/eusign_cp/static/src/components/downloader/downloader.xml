@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="eusign_cp.owl_downloader">
+        <div class="downloader">
+            <div class="m-1">
+                <h6 class="text-center" t-esc="props.title"/>
+                <t t-foreach="props.certificates" t-key="i.serial" t-as="i">
+                    <i class="fa fa-file-text-o" aria-hidden="true"> </i>
+                    <small class="m-2" t-esc="i.keyUsage"/><br/>
+                    <a href="javascript:void(0);" t-on-click="onLoadCertificate" t-esc="i.serial"/><br/>
+                </t>
+            </div>
+        </div>
+    </t>
+</templates>

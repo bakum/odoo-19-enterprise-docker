@@ -1,0 +1,23 @@
+{
+    "name": "Database Backup & Restore",
+    "summary": "Automated local and remote database backup management",
+    "version": "19.0.1.0.0",
+    "category": "Tools",
+    "author": "Bakum Viacheslav",
+    "license": "LGPL-3",
+    "depends": ["base", "mail"],
+    "data": [
+        "security/ir.model.access.csv",
+        "wizards/backup_custom_message_wizard_view.xml",
+        "wizards/backup_deletion_confirmation_view.xml",
+        "data/backup_process_sequence.xml",
+        "data/backup_cron.xml",
+        "views/backup_remote_server_views.xml",
+        "views/backup_process_views.xml",
+        "views/menuitems.xml",
+    ],
+    "images": ["static/description/icon.png"],
+    "application": True,
+    "installable": True,
+    "external_dependencies": {"python": ["paramiko"]},
+}

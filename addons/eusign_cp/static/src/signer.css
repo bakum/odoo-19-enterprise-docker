@@ -1,0 +1,36 @@
+#drop-area {
+  border: 2px dashed #ccc;
+  border-radius: 20px;
+  /*width: 480px;*/
+  /*font-family: sans-serif;*/
+  /*margin: 100px auto;*/
+  padding: 10px;
+}
+#drop-area.highlight {
+  border-color: purple;
+}
+p {
+  margin-top: 0;
+}
+.my-form {
+  margin-bottom: 10px;
+}
+#fileElem {
+  display: none;
+}
+#fileList {
+  list-style: none;
+}
+button.disabled, label.disabled, input.disabled {
+    pointer-events: none;
+    background-color: #e9ecef;
+    opacity: 1;
+}
+
+.eusign-navbar-status {
+  font-size: 0.75rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 60vw;
+}

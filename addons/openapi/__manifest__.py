@@ -1,0 +1,22 @@
+{
+    "name": "OpenAPI Connector",
+    "version": "19.0.1.0.0",
+    "summary": "Configurable REST API endpoints with Swagger UI",
+    "category": "Tools",
+    "author": "Bakum Viacheslav",
+    "license": "LGPL-3",
+    "depends": ["base", "web"],
+    "data": [
+        "security/groups.xml",
+        "security/ir.model.access.csv",
+        "views/openapi_version_views.xml",
+        "views/openapi_path_views.xml",
+        "views/openapi_tag_views.xml",
+        "views/openapi_log_views.xml",
+        "views/swagger_templates.xml",
+    ],
+    "demo": [],
+    "installable": True,
+    "application": True,
+    "images": ["static/description/icon.png"],
+}

@@ -1,0 +1,27 @@
+<odoo>
+    <data>
+        <template id="eusign_cp.signer" name="Awesome T-Shirt thank you">
+            <html t-att-lang="lang and lang.replace('_', '-')">
+                <head>
+                    <meta charset="utf-8"/>
+                    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+                    <title>EUSignCP - ІІТ Користувач ЦСК-1.</title>
+                    <link type="image/x-icon" rel="shortcut icon" href="/web/static/img/favicon.ico"/>
+                    <script type="text/javascript">
+                        var odoo = {
+                            csrf_token: "<t t-nocache="The csrf token must always be up to date." t-esc="request.csrf_token(None)"/>",
+                            debug: "<t t-esc="debug"/>",
+                        };
+                    </script>
+                    <script t-nocache="Session information should always be up to date." type="text/javascript">
+                        odoo.__session_info__ = <t t-out="json.dumps(request.env['ir.http'].get_frontend_session_info())"/>;
+                    </script>
+                    <t t-call-assets="web.assets_frontend"/>
+                    <t t-call-assets="eusign_cp.assets_library"/>
+                    <t t-call-assets="eusign_cp.assets_signer"/>
+                </head>
+                <body><div id="eusign_cp_signer"></div> </body>
+            </html>
+        </template>
+    </data>
+</odoo>
