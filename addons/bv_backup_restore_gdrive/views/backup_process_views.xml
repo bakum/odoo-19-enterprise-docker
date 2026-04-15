@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="backup_process_form_view_gdrive_inherit" model="ir.ui.view">
+            <field name="name">backup.process.form.gdrive.inherit</field>
+            <field name="model">backup.process</field>
+            <field name="inherit_id" ref="bv_backup_restore.backup_process_form_view"/>
+            <field name="arch" type="xml">
+                <field name="remote_server_id" position="after">
+                    <field name="gdrive_config_id" invisible="backup_location != 'google_drive'" readonly="state != 'draft'"/>
+                    <button
+                        string="Test Google Drive"
+                        name="test_gdrive_connection"
+                        type="object"
+                        class="oe_highlight"
+                        invisible="backup_location != 'google_drive' or not gdrive_config_id"
+                    />
+                </field>
+            </field>
+        </record>
+    </data>
+</odoo>

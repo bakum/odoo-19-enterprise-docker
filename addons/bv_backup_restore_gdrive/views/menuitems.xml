@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <menuitem
+            id="backup_gdrive_config_menu"
+            name="Google Drive"
+            parent="bv_backup_restore.backup_configuration_menu"
+            action="backup_gdrive_config_action_view"
+            sequence="2"
+        />
+    </data>
+</odoo>
