@@ -20,6 +20,7 @@ REPO_URL="${REPO_URL:-}"
 BRANCH="${BRANCH:-master}"
 TARGET_DIR="${TARGET_DIR:-/opt/odoo-src}"
 SPARSE_PATHS="${SPARSE_PATHS:-addons}"
+SPARSE_MODE="${SPARSE_MODE:-cone}"
 REMOTE_NAME="${REMOTE_NAME:-origin}"
 
 if [ -z "${REPO_URL}" ]; then
@@ -33,6 +34,7 @@ echo "[INFO] repo=${REPO_URL}"
 echo "[INFO] branch=${BRANCH}"
 echo "[INFO] target_dir=${TARGET_DIR}"
 echo "[INFO] sparse_paths=${SPARSE_PATHS}"
+echo "[INFO] sparse_mode=${SPARSE_MODE}"
 
 mkdir -p "${TARGET_DIR}"
 cd "${TARGET_DIR}"
@@ -54,12 +56,34 @@ else
   git remote add "${REMOTE_NAME}" "${REPO_URL}"
 fi
 
-echo "[INFO] Enabling sparse-checkout (cone mode)"
-git sparse-checkout init --cone
-
-echo "[INFO] Applying sparse paths"
-# shellcheck disable=SC2086
-git sparse-checkout set ${SPARSE_PATHS}
+case "${SPARSE_MODE}" in
+  cone)
+    echo "[INFO] Enabling sparse-checkout (cone mode)"
+    git sparse-checkout init --cone
+    echo "[INFO] Applying sparse paths (cone mode)"
+    # shellcheck disable=SC2086
+    git sparse-checkout set ${SPARSE_PATHS}
+    ;;
+  no-cone)
+    echo "[INFO] Enabling sparse-checkout (no-cone mode)"
+    git sparse-checkout init --no-cone
+    echo "[INFO] Applying sparse paths (no-cone mode)"
+    tmp_sparse_file="$(mktemp)"
+    trap 'rm -f "${tmp_sparse_file}"' EXIT
+    for path in ${SPARSE_PATHS}; do
+      normalized_path="${path%/}"
+      if [ -n "${normalized_path}" ]; then
+        echo "${normalized_path}/**" >> "${tmp_sparse_file}"
+      fi
+    done
+    git sparse-checkout set --stdin < "${tmp_sparse_file}"
+    ;;
+  *)
+    echo "[ERROR] Unsupported SPARSE_MODE: ${SPARSE_MODE}"
+    echo "[HINT] Use SPARSE_MODE=cone or SPARSE_MODE=no-cone"
+    exit 1
+    ;;
+esac
 
 echo "[INFO] Fetching branch ${BRANCH}"
 git fetch "${REMOTE_NAME}" "${BRANCH}"
